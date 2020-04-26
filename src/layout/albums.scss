@@ -1,0 +1,55 @@
+.albumPage {
+  .artist {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .title {
+    font-size: 20px;
+  }
+  .art {
+    height: 200px;
+    width: 200px;
+  }
+
+  .buttonBar {
+    display: flex;
+    width: 300px;
+
+    .navigate {
+      background-color: green;
+      border-radius: 5px;
+      outline: none;
+      border: none;
+      padding: 10px;
+    }
+
+    .next {
+      margin-left: auto;
+    }
+
+    .previous {
+      margin-right: auto;
+    }
+  }
+
+  .square {
+    width: 300px;
+    height: 300px;
+  }
+
+  .p-grid {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  button {
+    padding: 0;
+    margin: 0;
+    border: none;
+    background-color: transparent;
+  }
+  button:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
