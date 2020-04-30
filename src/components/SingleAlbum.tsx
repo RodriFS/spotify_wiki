@@ -4,19 +4,26 @@ import ArtistLink from "./ArtistLink";
 import TrackList from "./TrackList";
 import { get } from "../api/fetchProxy";
 import { Panel } from "primereact/panel";
+import { Location } from "history";
+import { ErrorResponse, isErrorResponse } from "../typings/request";
 
-const SingleAlbum = ({ location }: any) => {
-  const [album, setAlbum] = useState();
+interface SingleAlbum {
+  location: Location<{ endpoint: string }>;
+}
+const SingleAlbum = ({ location }: SingleAlbum) => {
+  const [album, setAlbum] = useState<SpotifyApi.SingleAlbumResponse>();
 
   useEffect(() => {
     if (!location.state) {
       return;
     }
-    get({ url: location.state.endpoint }).then((album) => {
-      if (!album.error) {
-        setAlbum(album);
+    get({ url: location.state.endpoint }).then(
+      (album: SpotifyApi.SingleAlbumResponse | ErrorResponse) => {
+        if (!isErrorResponse(album)) {
+          setAlbum(album);
+        }
       }
-    });
+    );
   }, [location.state]);
 
   if (!album) {
@@ -32,7 +39,7 @@ const SingleAlbum = ({ location }: any) => {
     genres,
     label,
     tracks,
-  } = album as any;
+  } = album;
   return (
     <div className="singleAlbum">
       <Panel header={name}>

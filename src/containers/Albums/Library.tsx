@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { get, BASE_URL, addQueryParams } from "../../api/fetchProxy";
 import Albums from "../../components/Albums";
+import { History } from "history";
+import { ErrorResponse, isErrorResponse } from "../../typings/request";
 
-const AlbumsContainer = ({ history }: any) => {
-  const [albums, setAlbums] = useState([]);
-  const [nextQuery, setNextQuery] = useState();
-  const [previousQuery, setPreviousQuery] = useState();
+interface AlbumContainer {
+  history: History;
+}
+const AlbumsContainer = ({ history }: AlbumContainer) => {
+  const [albums, setAlbums] = useState<SpotifyApi.AlbumObjectFull[]>([]);
+  const [nextQuery, setNextQuery] = useState<string>();
+  const [previousQuery, setPreviousQuery] = useState<string>();
 
+  type PagingSavedAlbum = SpotifyApi.PagingObject<SpotifyApi.SavedAlbumObject>;
   const fetchNextAlbums = (query: string) => {
-    get({ url: query }).then(({ items, next, previous, error }) => {
-      if (!error) {
-        setAlbums(items.map((i: any) => i.album));
-        setNextQuery(next);
-        setPreviousQuery(previous);
+    get({ url: query }).then((paging: PagingSavedAlbum | ErrorResponse) => {
+      if (!isErrorResponse(paging)) {
+        setAlbums(paging.items.map((i) => i.album));
+        setNextQuery(paging.next);
+        setPreviousQuery(paging.previous);
         window.scrollTo(0, 0);
       }
     });
@@ -37,7 +43,7 @@ const AlbumsContainer = ({ history }: any) => {
     }
   };
 
-  const goToAlbum = (endpoint: any) => {
+  const goToAlbum = (endpoint: string) => {
     history.push({
       pathname: "/album",
       state: { endpoint },

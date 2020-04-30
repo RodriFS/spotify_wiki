@@ -3,8 +3,15 @@ import ArtistLink from "./ArtistLink";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 
-const TrackList = ({ tracks }: any) => {
-  const rowTemplate = (rowData: any, _: any) => {
+interface TrackList {
+  tracks: SpotifyApi.TrackObjectSimplified[];
+}
+interface RowData {
+  artists: SpotifyApi.ArtistObjectFull[];
+  name: string;
+}
+const TrackList = ({ tracks }: TrackList) => {
+  const rowTemplate = (rowData: RowData, _: unknown) => {
     return <ArtistLink artists={rowData.artists} />;
   };
   return (

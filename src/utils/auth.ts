@@ -27,3 +27,13 @@ export const setTokenInLocalStorage = (token: string) => {
 export const clearTokenFromLocalStorage = () => {
   localStorage.removeItem(TOKEN_STORAGE_KEY);
 };
+
+export const getRedirectAddress = (): string => {
+  const query = new URLSearchParams();
+  query.set("client_id", "0a2086bcc3f54865929ad90b4d7bd7ea");
+  query.set("response_type", "token");
+  query.set("redirect_uri", "https://spotify-wiki.herokuapp.com/authorized");
+  query.set("state", "lksndlaksjdnmalsdnkajsnd");
+  query.set("scope", "user-library-read");
+  return "https://accounts.spotify.com/authorize?" + query.toString();
+};

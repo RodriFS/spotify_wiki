@@ -2,28 +2,35 @@ import React, { useState, useEffect } from "react";
 import { get } from "../api/fetchProxy";
 import { Carousel } from "primereact/carousel";
 import { Panel } from "primereact/panel";
+import { Discogs } from "../typings/discogs";
+import { isErrorResponse, ErrorResponse } from "../typings/request";
 
 const token = "DlmhWUXwGmDjCoSWFYzBROvnlXraDOpvSQaKtYLu";
 const DISCOGS_ARTIST_URL = "https://www.discogs.com";
-const MoreArtistInfo = ({ name }: any) => {
-  const [artists, setArtists] = useState([]);
+
+interface MoreArtistInfo {
+  name: string;
+}
+const MoreArtistInfo = ({ name }: MoreArtistInfo) => {
+  const [artists, setArtists] = useState<Discogs.ArtistObjectFull[]>([]);
   useEffect(() => {
     if (!name) {
       return;
     }
+    type ArtistQuery = Discogs.ArtistQueryResults<Discogs.ArtistObjectFull[]>;
     get({
       url: "https://api.discogs.com/database/search?type=artist&q=" + name,
       headers: {
         Authorization: "Discogs token=" + token,
       },
-    }).then((ob) => {
-      if (!ob.error) {
-        setArtists(ob.results);
+    }).then((artists: ArtistQuery | ErrorResponse) => {
+      if (!isErrorResponse(artists)) {
+        setArtists(artists.results);
       }
     });
   }, [name]);
 
-  const moreArtistsInfoTemplate = (artist: any) => {
+  const moreArtistsInfoTemplate = (artist: Discogs.ArtistObjectFull) => {
     return (
       <a
         key={artist.id}

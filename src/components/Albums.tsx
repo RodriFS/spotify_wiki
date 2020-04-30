@@ -8,10 +8,10 @@ import { Toolbar } from "primereact/toolbar";
 import { Button } from "primereact/button";
 
 type Albums = {
-  albums: any[];
+  albums: SpotifyApi.AlbumObjectFull[];
   getPreviousAlbums?: () => void;
   getNextAlbums?: () => void;
-  goToAlbum: (album: any) => void;
+  goToAlbum: (href: string) => void;
   hasNext?: boolean;
   hasPrevious?: boolean;
 };
@@ -23,7 +23,7 @@ const Albums = ({
   hasPrevious,
   goToAlbum,
 }: Albums) => {
-  const albumTemplate = (album: any) => {
+  const albumTemplate = (album: SpotifyApi.AlbumObjectFull) => {
     const { images, name, artists, href, id } = album;
     const header = (
       <button style={{ height: 35 }} onClick={() => goToAlbum(href)}>

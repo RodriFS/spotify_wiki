@@ -1,7 +1,10 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
-const ArtistLink = ({ artists }: any) => {
+interface ArtistLink {
+  artists: SpotifyApi.ArtistObjectSimplified[];
+}
+const ArtistLink = ({ artists }: ArtistLink) => {
   const history = useHistory();
   const onClickHandler = (endpoint: string) => {
     history.push({
@@ -11,7 +14,7 @@ const ArtistLink = ({ artists }: any) => {
   };
   return (
     <div>
-      {artists.map((artist: any) => (
+      {artists.map((artist: SpotifyApi.ArtistObjectSimplified) => (
         <button key={artist.id} onClick={() => onClickHandler(artist.href)}>
           {artist.name}
         </button>

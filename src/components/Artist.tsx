@@ -1,7 +1,10 @@
 import React from "react";
 import { Panel } from "primereact/panel";
 
-const Artist = ({ artist }: any) => {
+interface Artist {
+  artist: SpotifyApi.ArtistObjectFull;
+}
+const Artist = ({ artist }: Artist) => {
   if (!artist) {
     return <div>404</div>;
   }

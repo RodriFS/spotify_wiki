@@ -2,9 +2,10 @@ import React from "react";
 import { getTokenFromLocalStorage } from "../../utils/auth";
 import { Route, useHistory, RouteProps } from "react-router-dom";
 import TopBar from "../Navigation/TopBar";
+import { History } from "history";
 
 const ProtectedRoute = ({ component, ...rest }: RouteProps) => {
-  const history = useHistory();
+  const history = useHistory<History>();
   const token = getTokenFromLocalStorage();
   if (!token) {
     history.push("/");

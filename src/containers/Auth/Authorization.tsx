@@ -1,20 +1,29 @@
 import React from "react";
-import { getTokenFromLocalStorage } from "../../utils/auth";
+import { getTokenFromLocalStorage, getRedirectAddress } from "../../utils/auth";
+import { History } from "history";
 
-const Authorization = ({ history }: any) => {
+interface Authorization {
+  history: History;
+}
+const Authorization = ({ history }: Authorization) => {
   if (getTokenFromLocalStorage()) {
     history.push("/myLibrary");
     return null;
   }
-  const query = new URLSearchParams();
-  query.set("client_id", "0a2086bcc3f54865929ad90b4d7bd7ea");
-  query.set("response_type", "token");
-  query.set("redirect_uri", "https://spotify-wiki.herokuapp.com/authorized");
-  query.set("state", "lksndlaksjdnmalsdnkajsnd");
-  query.set("scope", "user-library-read");
-  const redirect = "https://accounts.spotify.com/authorize?" + query.toString();
 
-  return <a href={redirect}>Authenticate with Spotify!</a>;
+  return (
+    <div className="authorizationPage">
+      <div className="welcome_title">
+        <div className="welcome">Welcome to:</div>
+        <div className="titleLogo">Spotify + Wiki</div>
+      </div>
+      <div className="redirectBox">
+        <a className="redirectLink" href={getRedirectAddress()}>
+          Authenticate with Spotify!
+        </a>
+      </div>
+    </div>
+  );
 };
 
 export default Authorization;

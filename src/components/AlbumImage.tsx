@@ -1,6 +1,10 @@
 import React from "react";
 
-const AlbumImage = ({ images, onClick }: any) => {
+interface AlbumImage {
+  images: SpotifyApi.ImageObject[];
+  onClick?: (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => void;
+}
+const AlbumImage = ({ images, onClick }: AlbumImage) => {
   return (
     <img
       onClick={onClick}

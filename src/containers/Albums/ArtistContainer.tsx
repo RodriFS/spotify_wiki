@@ -3,32 +3,39 @@ import { get } from "../../api/fetchProxy";
 import Artist from "../../components/Artist";
 import Albums from "../../components/Albums";
 import MoreArtistInfo from "../../components/MoreArtistInfo";
+import { History, Location } from "history";
+import { ErrorResponse, isErrorResponse } from "../../typings/request";
 
-const ArtistContainer = ({ history, location }: any) => {
-  const [artist, setArtist] = useState();
-  const [albums, setAlbums] = useState([]);
+interface ArtistContainer {
+  history: History;
+  location: Location<{ endpoint: string }>;
+}
+const ArtistContainer = ({ history, location }: ArtistContainer) => {
+  const [artist, setArtist] = useState<SpotifyApi.ArtistObjectFull>();
+  const [albums, setAlbums] = useState<SpotifyApi.AlbumObjectFull[]>([]);
 
   useEffect(() => {
     if (!location.state) {
       return;
     }
     get({ url: location.state.endpoint }).then(
-      ({ name, genres, images, error }) => {
-        if (!error) {
-          setArtist({ name, genres, images } as any);
+      (artist: SpotifyApi.ArtistObjectFull | ErrorResponse) => {
+        if (!isErrorResponse(artist)) {
+          setArtist(artist);
         }
       }
     );
+    type PagingSavedAlbum = SpotifyApi.PagingObject<SpotifyApi.AlbumObjectFull>;
     get({ url: location.state.endpoint + "/albums" }).then(
-      ({ items, error }) => {
-        if (!error) {
-          setAlbums(items);
+      (paging: PagingSavedAlbum | ErrorResponse) => {
+        if (!isErrorResponse(paging)) {
+          setAlbums(paging.items);
         }
       }
     );
   }, [location.state]);
 
-  const goToAlbum = (endpoint: any) => {
+  const goToAlbum = (endpoint: string) => {
     history.push({
       pathname: "/album",
       state: { endpoint },

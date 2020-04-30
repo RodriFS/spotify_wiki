@@ -1,4 +1,10 @@
 body {
-  background-color: black;
+  background-color: $background;
   color: white;
+}
+
+html,
+body,
+#root {
+  height: 100%;
 }

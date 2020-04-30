@@ -1,7 +1,11 @@
 import React from "react";
 import { Menubar } from "primereact/menubar";
+import { History } from "history";
 
-const TopBar = ({ history }: any) => {
+interface TopBar {
+  history: History;
+}
+const TopBar = ({ history }: TopBar) => {
   const onClickHander = () => {
     history.push("/mylibrary");
   };
