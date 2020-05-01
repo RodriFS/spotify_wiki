@@ -3,7 +3,7 @@ import {
   clearTokenFromLocalStorage,
 } from "../utils/auth";
 import { history } from "../App";
-import { ErrorResponse } from "../typings/request";
+import { Ok, Err, Result } from "../utils/wrappings";
 export const BASE_URL = "https://api.spotify.com/v1";
 
 export const addQueryParams = <T extends object>(queryParams: T): string => {
@@ -21,12 +21,11 @@ type GET = {
 export const get = async ({
   url,
   headers = {},
-}: GET): Promise<any | ErrorResponse> => {
-  const errorResponse: ErrorResponse = { error: true };
+}: GET): Promise<Result<any, string>> => {
   const token: string | null = getTokenFromLocalStorage();
   if (!token) {
     history.push("/");
-    return errorResponse;
+    return Err("Invalid or missing token");
   }
   const response = await fetch(url, {
     headers: {
@@ -36,12 +35,12 @@ export const get = async ({
   });
   if (response.ok) {
     const parsedResponse: unknown = await response.json();
-    return parsedResponse;
+    return Ok(["ok", parsedResponse]);
   } else if (response.status === 401) {
     clearTokenFromLocalStorage();
     history.push("/");
-    return errorResponse;
+    return Err("Unauthorized access");
   } else {
-    return errorResponse;
+    return Err("Unexpected error");
   }
 };

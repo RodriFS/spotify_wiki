@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { get, BASE_URL, addQueryParams } from "../../api/fetchProxy";
 import Albums from "../../components/Albums";
 import { History } from "history";
-import { ErrorResponse, isErrorResponse } from "../../typings/request";
+import { Result } from "../../utils/wrappings";
 
 interface AlbumContainer {
   history: History;
@@ -14,8 +14,9 @@ const AlbumsContainer = ({ history }: AlbumContainer) => {
 
   type PagingSavedAlbum = SpotifyApi.PagingObject<SpotifyApi.SavedAlbumObject>;
   const fetchNextAlbums = (query: string) => {
-    get({ url: query }).then((paging: PagingSavedAlbum | ErrorResponse) => {
-      if (!isErrorResponse(paging)) {
+    get({ url: query }).then((response: Result<PagingSavedAlbum, string>) => {
+      if (response.isOk()) {
+        const paging = response.ok();
         setAlbums(paging.items.map((i) => i.album));
         setNextQuery(paging.next);
         setPreviousQuery(paging.previous);

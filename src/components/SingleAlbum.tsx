@@ -5,7 +5,7 @@ import TrackList from "./TrackList";
 import { get } from "../api/fetchProxy";
 import { Panel } from "primereact/panel";
 import { Location } from "history";
-import { ErrorResponse, isErrorResponse } from "../typings/request";
+import { Result } from "../utils/wrappings";
 
 interface SingleAlbum {
   location: Location<{ endpoint: string }>;
@@ -18,8 +18,9 @@ const SingleAlbum = ({ location }: SingleAlbum) => {
       return;
     }
     get({ url: location.state.endpoint }).then(
-      (album: SpotifyApi.SingleAlbumResponse | ErrorResponse) => {
-        if (!isErrorResponse(album)) {
+      (response: Result<SpotifyApi.SingleAlbumResponse, string>) => {
+        if (response.isOk()) {
+          const album = response.ok();
           setAlbum(album);
         }
       }

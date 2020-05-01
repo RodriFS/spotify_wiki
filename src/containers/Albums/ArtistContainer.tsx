@@ -4,7 +4,7 @@ import Artist from "../../components/Artist";
 import Albums from "../../components/Albums";
 import MoreArtistInfo from "../../components/MoreArtistInfo";
 import { History, Location } from "history";
-import { ErrorResponse, isErrorResponse } from "../../typings/request";
+import { Result } from "../../utils/wrappings";
 
 interface ArtistContainer {
   history: History;
@@ -19,16 +19,18 @@ const ArtistContainer = ({ history, location }: ArtistContainer) => {
       return;
     }
     get({ url: location.state.endpoint }).then(
-      (artist: SpotifyApi.ArtistObjectFull | ErrorResponse) => {
-        if (!isErrorResponse(artist)) {
+      (response: Result<SpotifyApi.ArtistObjectFull, string>) => {
+        if (response.isOk()) {
+          const artist = response.ok();
           setArtist(artist);
         }
       }
     );
     type PagingSavedAlbum = SpotifyApi.PagingObject<SpotifyApi.AlbumObjectFull>;
     get({ url: location.state.endpoint + "/albums" }).then(
-      (paging: PagingSavedAlbum | ErrorResponse) => {
-        if (!isErrorResponse(paging)) {
+      (response: Result<PagingSavedAlbum, string>) => {
+        if (response.isOk) {
+          const paging = response.ok();
           setAlbums(paging.items);
         }
       }

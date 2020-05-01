@@ -3,7 +3,7 @@ import { get } from "../api/fetchProxy";
 import { Carousel } from "primereact/carousel";
 import { Panel } from "primereact/panel";
 import { Discogs } from "../typings/discogs";
-import { isErrorResponse, ErrorResponse } from "../typings/request";
+import { Ok, Err, Result } from "../utils/wrappings";
 
 const token = "DlmhWUXwGmDjCoSWFYzBROvnlXraDOpvSQaKtYLu";
 const DISCOGS_ARTIST_URL = "https://www.discogs.com";
@@ -23,8 +23,9 @@ const MoreArtistInfo = ({ name }: MoreArtistInfo) => {
       headers: {
         Authorization: "Discogs token=" + token,
       },
-    }).then((artists: ArtistQuery | ErrorResponse) => {
-      if (!isErrorResponse(artists)) {
+    }).then((response: Result<ArtistQuery, string>) => {
+      if (response.isOk()) {
+        const artists = response.ok();
         setArtists(artists.results);
       }
     });
