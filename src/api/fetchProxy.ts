@@ -4,7 +4,6 @@ import {
 } from "../utils/auth";
 import { history } from "../App";
 import { Ok, Err, Result } from "../utils/wrappings";
-export const BASE_URL = "https://api.spotify.com/v1";
 
 export const addQueryParams = <T extends object>(queryParams: T): string => {
   const url = new URLSearchParams();
@@ -35,7 +34,7 @@ export const get = async ({
   });
   if (response.ok) {
     const parsedResponse: unknown = await response.json();
-    return Ok(["ok", parsedResponse]);
+    return Ok(parsedResponse);
   } else if (response.status === 401) {
     clearTokenFromLocalStorage();
     history.push("/");

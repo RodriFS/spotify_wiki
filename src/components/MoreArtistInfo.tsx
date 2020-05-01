@@ -3,10 +3,8 @@ import { get } from "../api/fetchProxy";
 import { Carousel } from "primereact/carousel";
 import { Panel } from "primereact/panel";
 import { Discogs } from "../typings/discogs";
-import { Ok, Err, Result } from "../utils/wrappings";
-
-const token = "DlmhWUXwGmDjCoSWFYzBROvnlXraDOpvSQaKtYLu";
-const DISCOGS_ARTIST_URL = "https://www.discogs.com";
+import { Result } from "../utils/wrappings";
+import { DISCOGS_BASE_URL, DISCOGS_TOKEN } from "../constants/config";
 
 interface MoreArtistInfo {
   name: string;
@@ -21,7 +19,7 @@ const MoreArtistInfo = ({ name }: MoreArtistInfo) => {
     get({
       url: "https://api.discogs.com/database/search?type=artist&q=" + name,
       headers: {
-        Authorization: "Discogs token=" + token,
+        Authorization: "Discogs token=" + DISCOGS_TOKEN,
       },
     }).then((response: Result<ArtistQuery, string>) => {
       if (response.isOk()) {
@@ -35,7 +33,7 @@ const MoreArtistInfo = ({ name }: MoreArtistInfo) => {
     return (
       <a
         key={artist.id}
-        href={DISCOGS_ARTIST_URL + artist.uri}
+        href={DISCOGS_BASE_URL + artist.uri}
         target="_blank"
         rel="noopener noreferrer"
       >

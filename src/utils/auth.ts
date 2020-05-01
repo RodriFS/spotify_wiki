@@ -1,4 +1,11 @@
-const TOKEN_STORAGE_KEY = "spotify_wiki_token";
+import {
+  STORAGE_KEY,
+  SPOTIFY_CLIENT_ID,
+  SPOTIFY_REDIRECT_URI,
+  SPOTIFY_STATE,
+  SPOTIFY_AUTH_URL,
+  SPOTIFY_SCOPE,
+} from "../constants/config";
 
 export const getTokenFromHash = (hash: string) => {
   return hash
@@ -13,7 +20,7 @@ export const getTokenFromHash = (hash: string) => {
 };
 
 export const getTokenFromLocalStorage = () => {
-  const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+  const token = localStorage.getItem(STORAGE_KEY);
   if (!token) {
     return null;
   }
@@ -21,19 +28,19 @@ export const getTokenFromLocalStorage = () => {
 };
 
 export const setTokenInLocalStorage = (token: string) => {
-  localStorage.setItem(TOKEN_STORAGE_KEY, token);
+  localStorage.setItem(STORAGE_KEY, token);
 };
 
 export const clearTokenFromLocalStorage = () => {
-  localStorage.removeItem(TOKEN_STORAGE_KEY);
+  localStorage.removeItem(STORAGE_KEY);
 };
 
 export const getRedirectAddress = (): string => {
   const query = new URLSearchParams();
-  query.set("client_id", "0a2086bcc3f54865929ad90b4d7bd7ea");
+  query.set("client_id", SPOTIFY_CLIENT_ID);
   query.set("response_type", "token");
-  query.set("redirect_uri", "https://spotify-wiki.herokuapp.com/authorized");
-  query.set("state", "lksndlaksjdnmalsdnkajsnd");
-  query.set("scope", "user-library-read");
-  return "https://accounts.spotify.com/authorize?" + query.toString();
+  query.set("redirect_uri", SPOTIFY_REDIRECT_URI);
+  query.set("state", SPOTIFY_STATE);
+  query.set("scope", SPOTIFY_SCOPE);
+  return SPOTIFY_AUTH_URL + query.toString();
 };

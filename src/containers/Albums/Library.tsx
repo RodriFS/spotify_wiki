@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { get, BASE_URL, addQueryParams } from "../../api/fetchProxy";
+import { get, addQueryParams } from "../../api/fetchProxy";
 import Albums from "../../components/Albums";
 import { History } from "history";
 import { Result } from "../../utils/wrappings";
+import { SPOTIFY_BASE_URL } from "../../constants/config";
 
 interface AlbumContainer {
   history: History;
@@ -29,7 +30,9 @@ const AlbumsContainer = ({ history }: AlbumContainer) => {
       offset: "0",
       limit: "21",
     };
-    fetchNextAlbums(BASE_URL + "/me/albums" + addQueryParams(queryParams));
+    fetchNextAlbums(
+      SPOTIFY_BASE_URL + "/me/albums" + addQueryParams(queryParams)
+    );
   }, []);
 
   const getPreviousAlbums = async () => {
