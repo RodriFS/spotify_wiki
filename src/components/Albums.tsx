@@ -1,5 +1,4 @@
 import React from "react";
-import "../layout/albums.scss";
 import AlbumImage from "./AlbumImage";
 import ArtistLink from "./ArtistLink";
 import { DataView } from "primereact/dataview";

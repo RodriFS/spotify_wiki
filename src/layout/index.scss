@@ -1,8 +1,12 @@
 @import url("https://fonts.googleapis.com/css?family=Just+Another+Hand&display=swap");
 
 @import "./colors.scss";
-@import "./App.scss";
-@import "./albums.scss";
-@import "./more_info.scss";
-@import "./singleAlbum.scss";
-@import "./authorization.scss";
+
+@import "./Pages/App.scss";
+@import "./Pages/Albums.scss";
+@import "./Pages/MoreArtistInfo.scss";
+@import "./Pages/SingleAlbum.scss";
+@import "./Pages/Authorization.scss";
+@import "./Pages/TopBar.scss";
+
+@import "./Templates/MenuBar.scss";
